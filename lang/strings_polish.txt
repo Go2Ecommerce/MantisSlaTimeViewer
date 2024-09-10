@@ -1,0 +1,16 @@
+<?php
+
+$s_plugin_SlaTimeViewer_tab_label = 'Wykres Sla';
+$s_plugin_SlaTimeViewer_closed_at_day = 'Zgłoszenia zamknięte w dniu';
+$s_plugin_SlaTimeViewer_without_sla = 'Zgłoszenia bez SLA';
+$s_plugin_SlaTimeViewer_closed_at_sla_time = 'Zgłoszenia zamknięte w czasie SLA';
+$s_plugin_SlaTimeViewer_closed_passed_sla_time = 'Zgłoszenia zamknięte z przekroczonym SLA';
+$s_plugin_SlaTimeViewer_closed_sum = 'Liczba zamkniętych zgłoszeń (suma)';
+$s_plugin_SlaTimeViewer_opened_sum = 'Liczba otwartych zgłoszeń (suma)';
+$s_plugin_SlaTimeViewer_opened = 'Zgłoszenia otwarte stan na dzień';
+$s_plugin_SlaTimeViewer_opened_passed_sla = 'Liczba zgłoszeń otwartych z przekroczonym SLA';
+$s_plugin_SlaTimeViewer_till_24 = 'Do 24h';
+$s_plugin_SlaTimeViewer_24_48 = 'Od 24h do 48h';
+$s_plugin_SlaTimeViewer_48_72 = 'Od 48h do 72h';
+$s_plugin_SlaTimeViewer_72_120 = 'Od 72h do 120h';
+$s_plugin_SlaTimeViewer_over_120 = 'Powyżej 120h';
