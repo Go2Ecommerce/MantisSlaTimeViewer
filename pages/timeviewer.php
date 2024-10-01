@@ -41,22 +41,22 @@ $statistics = $timeViewerApi->get_statistics();
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'without_sla' ) ?></td>
-			<td class="align-right">20</td>
-			<td class="align-right">24%</td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['withoutSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['withoutSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_at_sla_time' ) ?></td>
-			<td class="align-right">47</td>
-			<td class="align-right">57%</td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['atSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['atSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_passed_sla_time' ) ?></td>
-			<td class="align-right">16</td>
-			<td class="align-right">19%</td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['crossedSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['crossedSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_sum' ) ?></td>
-			<td class="align-right"><?php echo $statistics ?></td>
+			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['all'] ?></td>
 		</tr>
 	</table>
 	</div>
@@ -70,22 +70,22 @@ $statistics = $timeViewerApi->get_statistics();
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'without_sla' ) ?></td>
-			<td class="align-right">131</td>
-			<td class="align-right">52%</td>
+			<td class="align-right"><?php echo $statistics['openBugs']['withoutSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['openBugs']['withoutSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
-			<td><?php echo plugin_lang_get( 'closed_at_sla_time' ) ?></td>
-			<td class="align-right">47</td>
-			<td class="align-right">19%</td>
+			<td><?php echo plugin_lang_get( 'opened_with_sla' ) ?></td>
+			<td class="align-right"><?php echo $statistics['openBugs']['atSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['openBugs']['atSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
-			<td><?php echo plugin_lang_get( 'closed_passed_sla_time' ) ?></td>
-			<td class="align-right">75</td>
-			<td class="align-right">30%</td>
+			<td><?php echo plugin_lang_get( 'opened_passed_sla' ) ?></td>
+			<td class="align-right"><?php echo $statistics['openBugs']['crossedSla'] ?></td>
+			<td class="align-right"><?php echo $statistics['openBugs']['crossedSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'opened_sum' ) ?></td>
-			<td class="align-right">253</td>
+			<td class="align-right"><?php echo $statistics['openBugs']['all'] ?></td>
 		</tr>
 	</table>
 	</div>
@@ -99,28 +99,28 @@ $statistics = $timeViewerApi->get_statistics();
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'till_24' ) ?></td>
-			<td class="align-right">26</td>
-			<td class="align-right">35%</td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['till24h']['num'] ?></td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['till24h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '24_48' ) ?></td>
-			<td class="align-right">8</td>
-			<td class="align-right">11%</td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['24h-48h']['num'] ?></td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['24h-48h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '48_72' ) ?></td>
-			<td class="align-right">5</td>
-			<td class="align-right">7%</td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['48h-72h']['num'] ?></td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['48h-72h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '72_120' ) ?></td>
-			<td class="align-right">6</td>
-			<td class="align-right">8%</td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['72h-120h']['num'] ?></td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['72h-120h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'over_120' ) ?></td>
-			<td class="align-right">30</td>
-			<td class="align-right">40%</td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['over120h']['num'] ?></td>
+			<td class="align-right"><?php echo $statistics['openedPassedSla']['over120h']['percentage'] ?>%</td>
 		</tr>
 	</table>
 	</div>
