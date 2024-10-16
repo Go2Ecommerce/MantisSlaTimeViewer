@@ -32,6 +32,16 @@ class SlaTimeViewerApi {
             $closedBugsPreviousDayResults[] = $t_row;
             $reasonFieldValue = custom_field_get_value(21, $t_row['id']);
             $slaValue = custom_field_get_value(128, $t_row['id']);
+            $categoryName = category_get_field($t_row['category_id'], 'name');
+
+            if (
+                in_array($reasonFieldValue, ['Niezasadne', 'Konserwacja', 'Przegląd', 'Kradzież', 'Dewastacja'])
+                || in_array($categoryName, ['SDIP 65', 'RTF – P/K', 'Bezumowne', 'Zamówienie', 'Wypowiedzenie']) || !$slaValue
+            ) {
+                $closedWithoutSla++;
+                break;
+            }
+
             if ($slaValue) {
                 $table = plugin_table('time_tracking', 'SlaTimeTracking');
                 $query = "SELECT * FROM {$table} WHERE bug_id=" . db_param();
@@ -46,15 +56,6 @@ class SlaTimeViewerApi {
                 } else {
                     $closedPassedSla++;
                 }
-            }
-
-            $categoryName = category_get_field($t_row['category_id'], 'name');
-
-            if (
-                in_array($reasonFieldValue, ['Niezasadne', 'Konserwacja', 'Przegląd', 'Kradzież', 'Dewastacja'])
-                || in_array($categoryName, ['SDIP 65', 'RTF – P/K', 'Bezumowne', 'Zamówienie', 'Wypowiedzenie']) || !$slaValue
-            ) {
-                $closedWithoutSla++;
             }
         }
 
@@ -73,7 +74,18 @@ class SlaTimeViewerApi {
         while($t_row = db_fetch_array($openBugsQuery)) {
             $openBugsResults[] = $t_row;
             $reasonFieldValue = custom_field_get_value(21, $t_row['id']);
+
+            $categoryName = category_get_field($t_row['category_id'], 'name');
             $slaValue = custom_field_get_value(128, $t_row['id']);
+
+            if (
+                in_array($reasonFieldValue, ['Niezasadne', 'Konserwacja', 'Przegląd', 'Kradzież', 'Dewastacja'])
+                || in_array($categoryName, ['SDIP 65', 'RTF – P/K', 'Bezumowne', 'Zamówienie', 'Wypowiedzenie']) || !$slaValue
+            ) {
+                $openWithoutSla++;
+                continue;
+            }
+
 
             if ($slaValue) {
                 $table = plugin_table('time_tracking', 'SlaTimeTracking');
@@ -84,7 +96,7 @@ class SlaTimeViewerApi {
                     $row = db_fetch_array($result);
                     $slaTime = $row['sla_time'];
                 }
-                $slaDifference = $this->transformSla($slaValue) - $slaTime;
+                $slaDifference = $slaTime - $this->transformSla($slaValue);
 
                 if ($slaDifference < 0) {
                     $openAtSla++;
@@ -103,15 +115,6 @@ class SlaTimeViewerApi {
 
                     $openPassedSla++;
                 }
-            }
-
-            $categoryName = category_get_field($t_row['category_id'], 'name');
-
-            if (
-                in_array($reasonFieldValue, ['Niezasadne', 'Konserwacja', 'Przegląd', 'Kradzież', 'Dewastacja'])
-                || in_array($categoryName, ['SDIP 65', 'RTF – P/K', 'Bezumowne', 'Zamówienie', 'Wypowiedzenie']) || !$slaValue
-            ) {
-                $openWithoutSla++;
             }
         }
 
