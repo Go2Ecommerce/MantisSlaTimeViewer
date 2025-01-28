@@ -28,10 +28,19 @@ class SlaTimeViewerApi {
         $closedPassedSla = 0;
         $closedAtSla = 0;
 
+        $slaPLKId = custom_field_get_id_from_name('SLA_PLK');
+        $slaId = custom_field_get_id_from_name('SLA');
+        $reasonId = custom_field_get_id_from_name('Przyczyna');
+
         while($t_row = db_fetch_array($closedBugsPreviousDayQuery)) {
             $closedBugsPreviousDayResults[] = $t_row;
-            $reasonFieldValue = custom_field_get_value(21, $t_row['id']);
-            $slaValue = custom_field_get_value(128, $t_row['id']);
+            $reasonFieldValue = custom_field_get_value($reasonId, $t_row['id']);
+            $slaValue = custom_field_get_value($slaPLKId, $t_row['id']);
+
+            if ($slaValue === null) {
+                $slaValue = custom_field_get_value($slaId, $t_row['id']);
+            }
+
             $categoryName = category_get_field($t_row['category_id'], 'name');
 
             if (
@@ -73,10 +82,14 @@ class SlaTimeViewerApi {
         $over120 = 0;
         while($t_row = db_fetch_array($openBugsQuery)) {
             $openBugsResults[] = $t_row;
-            $reasonFieldValue = custom_field_get_value(21, $t_row['id']);
+            $reasonFieldValue = custom_field_get_value($reasonId, $t_row['id']);
 
             $categoryName = category_get_field($t_row['category_id'], 'name');
-            $slaValue = custom_field_get_value(128, $t_row['id']);
+            $slaValue = custom_field_get_value($slaPLKId, $t_row['id']);
+
+            if ($slaValue === null) {
+                $slaValue = custom_field_get_value($slaId, $t_row['id']);
+            }
 
             if (
                 in_array($reasonFieldValue, ['Niezasadne', 'Konserwacja', 'Przegląd', 'Kradzież', 'Dewastacja'])
