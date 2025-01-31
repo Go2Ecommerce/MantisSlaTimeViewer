@@ -22,7 +22,6 @@ class SlaTimeViewerApi {
 
         //zdarzenia zamkniete w poprzednim dniu
         $closedBugsPreviousDayQuery = db_query($queryClosed . '(80,90)');
-
         $closedBugsPreviousDayResults = array();
         $closedWithoutSla = 0;
         $closedPassedSla = 0;
@@ -31,6 +30,8 @@ class SlaTimeViewerApi {
         $slaPLKId = custom_field_get_id_from_name('SLA_PLK');
         $slaId = custom_field_get_id_from_name('SLA');
         $reasonId = custom_field_get_id_from_name('Przyczyna');
+
+
 
         while($t_row = db_fetch_array($closedBugsPreviousDayQuery)) {
             $closedBugsPreviousDayResults[] = $t_row;
@@ -48,7 +49,7 @@ class SlaTimeViewerApi {
                 || in_array($categoryName, ['SDIP 65', 'RTF – P/K', 'Bezumowne', 'Zamówienie', 'Wypowiedzenie']) || !$slaValue
             ) {
                 $closedWithoutSla++;
-                break;
+                continue;
             }
 
             if ($slaValue) {
@@ -130,7 +131,6 @@ class SlaTimeViewerApi {
                 }
             }
         }
-
 
         $dataArray = [
             'closedBugsPreviousDay' => [
