@@ -7,13 +7,16 @@ layout_page_begin( 'summary_page.php' );
 $t_filter = summary_get_filter();
 print_summary_menu('timeviewer.php', $t_filter);
 
-// Region filter
+// Filters
 $selected_region = gpc_get_string( 'region', '');
+$start_date = gpc_get_string( 'start_date', '' );
+$end_date = gpc_get_string( 'end_date', '' );
 // Form with region select
 ?>
-    <form method="get" style="margin: 15px 0;">
-        <label for="region">Filtruj po regionie:</label>
-        <select name="region" id="region" onchange="this.form.submit()">
+    <form method="get" id="regionFilterForm" style="margin: 15px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <input type="hidden" name="page" value="SlaTimeViewer/timeviewer.php">
+        <label for="region">Region:</label>
+        <select name="region" id="region">
             <option value="">-- Wszystkie --</option>
             <?php
             $regions = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'nie przydzielone do żadnego Regionu'];
@@ -23,12 +26,20 @@ $selected_region = gpc_get_string( 'region', '');
             }
             ?>
         </select>
+
+        <label for="start_date">Od:</label>
+        <input type="date" name="start_date" id="start_date" value="<?php echo string_attribute($start_date) ?>">
+
+        <label for="end_date">Do:</label>
+        <input type="date" name="end_date" id="end_date" value="<?php echo string_attribute($end_date) ?>">
+
+        <button type="submit">Filtruj</button>
     </form>
 <?php
 
 $timeViewerApi = new \SlaTimeViewer\SlaTimeViewerApi();
 
-$statistics = $timeViewerApi->get_statistics($selected_region);
+$statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end_date);
 
 ?>
 
