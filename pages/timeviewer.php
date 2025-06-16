@@ -5,11 +5,30 @@ layout_page_header();
 layout_page_begin( 'summary_page.php' );
 
 $t_filter = summary_get_filter();
-print_summary_menu( 'timeviewer.php', $t_filter );
+print_summary_menu('timeviewer.php', $t_filter);
+
+// Region filter
+$selected_region = gpc_get_string( 'region', '');
+// Form with region select
+?>
+    <form method="get" style="margin: 15px 0;">
+        <label for="region">Filtruj po regionie:</label>
+        <select name="region" id="region" onchange="this.form.submit()">
+            <option value="">-- Wszystkie --</option>
+            <?php
+            $regions = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'nie przydzielone do żadnego Regionu'];
+            foreach ( $regions as $region ) {
+                $selected = $selected_region === $region ? 'selected' : '';
+                echo "<option value=\"$region\" $selected>$region</option>";
+            }
+            ?>
+        </select>
+    </form>
+<?php
 
 $timeViewerApi = new \SlaTimeViewer\SlaTimeViewerApi();
 
-$statistics = $timeViewerApi->get_statistics();
+$statistics = $timeViewerApi->get_statistics($selected_region);
 
 ?>
 
