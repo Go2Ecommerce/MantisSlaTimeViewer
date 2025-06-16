@@ -5,7 +5,7 @@ namespace SlaTimeViewer;
 class SlaTimeViewerApi
 {
 
-    function get_statistics($regionFilter = null)
+    function get_statistics($regionFilter = null, $dateFrom = null, $dateTo = null)
     {
         $t_bug_table = db_get_table('bug');
         $t_custom_field_string_table = db_get_table('custom_field_string');
@@ -17,6 +17,14 @@ class SlaTimeViewerApi
         // Formatowanie dat w stylu SQL: 'YYYY-MM-DD HH:MM:SS'
         $dateFromStr = date('Y-m-d 00:00:00', $beginOfPreviousDay);
         $dateToStr = date('Y-m-d 23:59:59', $beginOfPreviousDay);
+
+        if ($dateFrom) {
+            $dateFromStr = date('Y-m-d 00:00:00', strtotime($dateFrom));
+        }
+
+        if ($dateTo) {
+            $dateToStr = date('Y-m-d 23:59:59', strtotime($dateTo));
+        }
 
         $queryClosed = "SELECT b.*
                         FROM {$t_bug_table} b
