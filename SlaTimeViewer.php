@@ -26,7 +26,12 @@ class SlaTimeViewerPlugin extends MantisPlugin
     {
         return array(
             'EVENT_MENU_SUMMARY' => 'summary_menu',
+            'EVENT_LAYOUT_RESOURCES' => 'add_javascript',
         );
+    }
+
+    public function add_javascript() {
+        return '<script src="' . plugin_file( 'filter.js' ) . '"></script>';
     }
 
     /**

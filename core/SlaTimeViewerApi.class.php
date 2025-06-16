@@ -5,7 +5,7 @@ namespace SlaTimeViewer;
 class SlaTimeViewerApi
 {
 
-    function get_statistics()
+    function get_statistics($regionFilter = null)
     {
         $t_bug_table = db_get_table('bug');
         $t_custom_field_string_table = db_get_table('custom_field_string');
@@ -49,6 +49,10 @@ class SlaTimeViewerApi
         $reasonId = custom_field_get_id_from_name('Przyczyna');
 
         while ($t_row = db_fetch_array($closedBugsPreviousDayQuery)) {
+            if ($regionFilter && !$this->matches_region($t_row, $regionFilter)) {
+                continue;
+            }
+
             $closedBugsPreviousDayResults[] = $t_row;
             $reasonFieldValue = custom_field_get_value($reasonId, $t_row['id']);
             $slaValue = custom_field_get_value($slaPLKId, $t_row['id']);
@@ -97,6 +101,10 @@ class SlaTimeViewerApi
         $moreThanThreeDays = 0;
         $over120 = 0;
         while ($t_row = db_fetch_array($openBugsQuery)) {
+            if ($regionFilter && !$this->matches_region($t_row, $regionFilter)) {
+                continue;
+            }
+
             $openBugsResults[] = $t_row;
             $reasonFieldValue = custom_field_get_value($reasonId, $t_row['id']);
 
@@ -191,6 +199,53 @@ class SlaTimeViewerApi
         ];
 
         return $dataArray;
+    }
+
+    private function matches_region($bug, $regionFilter) {
+        if (!$regionFilter) {
+            return true;
+        }
+
+        if ($regionFilter === 'nie przydzielone do żadnego Regionu') {
+            $regions = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7'];
+            $regionFieldId = 90;
+            $regionValue = custom_field_get_value($regionFieldId, $bug['id']);
+            $regIn = false;
+            $projectName = project_get_field($bug['project_id'], 'name');
+
+            if ($regionValue) {
+                foreach ($regions as $reg) {
+                    $regIn = stripos($regionValue, $reg) === 0;
+                    if ($regIn) {
+                        break;
+                    }
+                }
+            } else {
+                return preg_match('/^R[1-7]/', $projectName) === 0;
+            }
+            if ($bug['id'] === '440') {
+                var_dump(!$regIn);
+                var_dump(preg_match('/^R[1-7]/', $projectName) === 0);
+                var_dump(!$regIn || preg_match('/^R[1-7]/', $projectName) === 0);die;
+            }
+
+            return !$regIn || !preg_match('/^R[1-7]/', $projectName) === 0;
+        } else {
+            $regionFieldId = 90;
+            $regionValue = custom_field_get_value($regionFieldId, $bug['id']);
+
+            if ($regionValue) {
+                return stripos($regionValue, $regionFilter) === 0;
+            }
+
+            $projectName = project_get_field($bug['project_id'], 'name');
+            if (preg_match('/^R[1-7]/', $projectName, $matches)) {
+                $projectRegion = $matches[0]; // e.g. 'R1'
+                return $projectRegion === $regionFilter;
+            }
+        }
+
+        return false;
     }
 
     function transformSla($slaValue)
