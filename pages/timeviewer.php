@@ -41,6 +41,21 @@ $timeViewerApi = new \SlaTimeViewer\SlaTimeViewerApi();
 
 $statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end_date);
 
+function store_ids_in_session(array $ids): string {
+    $key = uniqid('sla_', true);
+    $_SESSION['sla_ids'][$key] = $ids;
+    return $key;
+}
+
+function sla_list_link(array $ids, string $label): string {
+    if (empty($ids)) {
+        return 0;
+    }
+    $key = store_ids_in_session($ids);
+    $url = plugin_page('ids_list.php') . '&key=' . urlencode($key) . '&title=' . urlencode($label);
+    return sprintf('<a href="%s" target="_blank">%s</a>', $url, count($ids));
+}
+
 ?>
 
 <div class="col-md-12 col-xs-12">
@@ -71,18 +86,23 @@ $statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'without_sla' ) ?></td>
-			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['withoutSla'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['closedBugsPreviousDay']['withoutSlaIds'], plugin_lang_get('without_sla')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['withoutSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_at_sla_time' ) ?></td>
-			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['atSla'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['closedBugsPreviousDay']['atSlaIds'], plugin_lang_get('closed_at_sla_time')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['atSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_passed_sla_time' ) ?></td>
-			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['crossedSla'] ?></td>
-			<td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['crossedSlaPercentage'] ?>%</td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['closedBugsPreviousDay']['crossedSlaIds'], plugin_lang_get('closed_passed_sla_time')); ?>
+            <td class="align-right"><?php echo $statistics['closedBugsPreviousDay']['crossedSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'closed_sum' ) ?></td>
@@ -100,17 +120,23 @@ $statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'without_sla' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openBugs']['withoutSla'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openBugs']['withoutSlaIds'], plugin_lang_get('without_sla')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openBugs']['withoutSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'opened_with_sla' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openBugs']['atSla'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openBugs']['atSlaIds'], plugin_lang_get('opened_with_sla')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openBugs']['atSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'opened_passed_sla' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openBugs']['crossedSla'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openBugs']['crossedSlaIds'], plugin_lang_get('opened_passed_sla')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openBugs']['crossedSlaPercentage'] ?>%</td>
 		</tr>
 		<tr>
@@ -129,27 +155,37 @@ $statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end
 		</thead>
 		<tr>
 			<td><?php echo plugin_lang_get( 'till_24' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openedPassedSla']['till24h']['num'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openedPassedSla']['till24h']['ids'], plugin_lang_get('till_24')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openedPassedSla']['till24h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '24_48' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openedPassedSla']['24h-48h']['num'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openedPassedSla']['24h-48h']['ids'], plugin_lang_get('24_48')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openedPassedSla']['24h-48h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '48_72' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openedPassedSla']['48h-72h']['num'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openedPassedSla']['48h-72h']['ids'], plugin_lang_get('48_72')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openedPassedSla']['48h-72h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( '72_120' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openedPassedSla']['72h-120h']['num'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openedPassedSla']['72h-120h']['ids'], plugin_lang_get('72_120')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openedPassedSla']['72h-120h']['percentage'] ?>%</td>
 		</tr>
 		<tr>
 			<td><?php echo plugin_lang_get( 'over_120' ) ?></td>
-			<td class="align-right"><?php echo $statistics['openedPassedSla']['over120h']['num'] ?></td>
+			<td class="align-right">
+                <?php echo sla_list_link($statistics['openedPassedSla']['over120h']['ids'], plugin_lang_get('over_120')); ?>
+            </td>
 			<td class="align-right"><?php echo $statistics['openedPassedSla']['over120h']['percentage'] ?>%</td>
 		</tr>
 	</table>
@@ -164,5 +200,6 @@ $statistics = $timeViewerApi->get_statistics($selected_region, $start_date, $end
 <div class="space-10"></div>
 </div>
 </div>
+
 <?php
 layout_page_end();

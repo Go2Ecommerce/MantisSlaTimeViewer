@@ -15,3 +15,4 @@ $s_plugin_SlaTimeViewer_24_48 = 'Od 24h do 48h';
 $s_plugin_SlaTimeViewer_48_72 = 'Od 48h do 72h';
 $s_plugin_SlaTimeViewer_72_120 = 'Od 72h do 120h';
 $s_plugin_SlaTimeViewer_over_120 = 'Powyżej 120h';
+$s_plugin_SlaTimeViewer_bug_list_title = 'Lista zgłoszeń';
