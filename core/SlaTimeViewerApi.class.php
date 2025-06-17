@@ -169,7 +169,7 @@ class SlaTimeViewerApi
                         $moreThanOneDayIds[] = $t_row['id'];
                         $moreThanOneDay++;
                     } elseif ($slaDifference > 172800 && $slaDifference < 259200) {
-                        $moreThanTwoDaysyIds[] = $t_row['id'];
+                        $moreThanTwoDaysIds[] = $t_row['id'];
                         $moreThanTwoDays++;
                     } elseif ($slaDifference > 259200 && $slaDifference < 432000) {
                         $moreThanThreeDaysIds[] = $t_row['id'];
