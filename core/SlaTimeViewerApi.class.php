@@ -263,11 +263,6 @@ class SlaTimeViewerApi
             } else {
                 return preg_match('/^R[1-7]/', $projectName) === 0;
             }
-            if ($bug['id'] === '440') {
-                var_dump(!$regIn);
-                var_dump(preg_match('/^R[1-7]/', $projectName) === 0);
-                var_dump(!$regIn || preg_match('/^R[1-7]/', $projectName) === 0);die;
-            }
 
             return !$regIn || !preg_match('/^R[1-7]/', $projectName) === 0;
         } else {
