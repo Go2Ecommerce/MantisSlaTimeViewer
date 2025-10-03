@@ -92,7 +92,7 @@ class SlaTimeViewerApi
                     $row = db_fetch_array($result);
                     $slaTime = $row['sla_time'];
                 }
-                if ($slaTime > $this->transformSla($slaValue)) {
+                if ($slaTime < $this->transformSla($slaValue)) {
                     $closedAtSlaIds[] = $t_row['id'];
                     $closedAtSla++;
                 } else {
